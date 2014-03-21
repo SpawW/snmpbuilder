@@ -1,0 +1,207 @@
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+--
+--                          PROPRIETARY MATERIALS
+--
+--     Websense Inc. (Websense) has prepared this material for use by
+--     Websense personnel, licensees, and customers.  The information 
+--     contained herein is the property of Websense and shall not be 
+--     reproduced in whole or part without the prior written consent 
+--     of an authorized representative of Websense Inc.
+--
+--                          RESTRICTED RIGHTS LEGEND
+--
+--     Use, duplication  or disclosure  by the U.S. Government is subject 
+--     to restrictions as set forth in subdivision (b)(3)(ii) of the Rights
+--     in Technical Data and Computer Software clause at 52.227-7013.  All 
+--     other Government use , duplication or disclosure shall be governed
+--     exclusively by the terms of the Websense Subscription Agreement. 
+--
+--                               Websense, Inc.
+--                         Copyright (c) 1996 - 2007
+--                          10240 Sorrento Valley Rd
+--                           San Diego, CA 92121
+--                              (858) 320-8000
+--
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+WEBSENSE-MIB DEFINITIONS ::= BEGIN
+
+	IMPORTS
+		TRAP-TYPE							FROM RFC1215
+		enterprises, MODULE-IDENTITY		FROM SNMPv2-SMI;
+
+  	
+	websense MODULE-IDENTITY
+		LAST-UPDATED "200508080000Z"
+		ORGANIZATION "Websense, Inc."
+		CONTACT-INFO "http://www.websense.com"
+		DESCRIPTION   "Websense SNMP"
+		::= { enterprises 23365 }
+             	                                                    
+           
+	----
+	-- Websense Enterprise Alerts
+	----
+	databaseDownloadFailure TRAP-TYPE
+	ENTERPRISE websense
+	DESCRIPTION
+	"Websense Alert: Database Download Failure"
+	::= 1000
+
+	databaseUpdated TRAP-TYPE
+	ENTERPRISE websense
+	DESCRIPTION
+	"Websense Alert: Database Updated"
+	::= 1001
+
+	approachingSubscriptionLimit TRAP-TYPE
+	ENTERPRISE websense
+	DESCRIPTION
+	"Websense Alert: Approaching Subscription Limit"
+	::= 1002
+
+	subscriptionExceeded TRAP-TYPE
+	ENTERPRISE websense
+	DESCRIPTION
+	"Websense Alert: Subscription Exceeded"
+	::= 1003
+
+	approachingSubscriptionExpirationWeek TRAP-TYPE
+	ENTERPRISE websense
+	DESCRIPTION
+	"Websense Alert: Approaching Subscription Expiration"
+	::= 1004
+
+	approachingSubscriptionExpirationMonth TRAP-TYPE
+	ENTERPRISE websense
+	DESCRIPTION
+	"Websense Alert: Approaching Subscription Expiration"
+	::= 1005
+
+	administratorLockedOut TRAP-TYPE
+	ENTERPRISE websense
+	DESCRIPTION
+	"Websense Alert: Administrator Locked Out"
+	::= 1006
+	
+	searchFilteringUpdate TRAP-TYPE
+	ENTERPRISE websense
+	DESCRIPTION
+	"Websense Alert: Search Filtering Update"
+	::= 1007	
+
+	categoryUsageAlert TRAP-TYPE
+	ENTERPRISE websense
+	DESCRIPTION
+	"Websense Alert: Configured Threshold Exceeded For Category"		
+	::= 2000
+
+	protocolUsageAlert TRAP-TYPE
+	ENTERPRISE websense
+	DESCRIPTION
+	"Websense Alert: Configured Threshold Exceeded For Protocol"
+	::= 2001
+
+
+	----
+	-- Websense CPM ALERTS
+	----            
+	cpmDatabaseDownloadFailure TRAP-TYPE
+	ENTERPRISE websense
+	DESCRIPTION
+	"Websense CPM Alert: Database Download Failure"
+	::= 4000
+
+	cpmApproachingSubscriptionLimit TRAP-TYPE
+	ENTERPRISE websense
+	DESCRIPTION
+	"Websense CPM Alert: Approaching Subscription Limit"
+	::= 4001
+
+	cpmExceededSubscriptionLimit TRAP-TYPE
+	ENTERPRISE websense
+	DESCRIPTION
+	"Websense CPM Alert: Exceeded Subscription Limit"
+	::= 4002
+
+	cpmClientUnresponsive TRAP-TYPE
+	ENTERPRISE websense
+	DESCRIPTION
+	"Websense CPM Alert: Client Unresponsive"
+	::= 4003
+
+	cpmSubscriptionExpired TRAP-TYPE
+	ENTERPRISE websense
+	DESCRIPTION
+	"Websense CPM Alert: Subscription Expired"
+	::= 4004
+
+AlertTrap4005 TRAP-TYPE
+ ENTERPRISE websense
+ DESCRIPTION
+   "Websense CPM Alert: Workstation quarantined"
+ ::= 4005
+
+AlertTrap4006 TRAP-TYPE
+ ENTERPRISE websense
+ DESCRIPTION
+   "Websense CPM Alert: Firewall Unresponsive"
+ ::= 4006
+
+	cpmHackingApplicationLaunched TRAP-TYPE
+	ENTERPRISE websense
+	DESCRIPTION
+	"Websense CPM Alert: Hacking Application Launched"
+	::= 4100
+
+	cpmSpywareApplicationLaunched TRAP-TYPE
+	ENTERPRISE websense
+	DESCRIPTION
+	"Websense CPM Alert: Spyware Application Launched"
+	::= 4101
+
+	cpmMaliciousApplicationLaunched TRAP-TYPE
+	ENTERPRISE websense
+	DESCRIPTION
+	"Websense CPM Alert: Malicious Application Launched"
+	::= 4102
+
+	cpmKeyloggerApplicationLaunched TRAP-TYPE
+	ENTERPRISE websense
+	DESCRIPTION
+	"Websense CPM Alert: Keylogger Application Launched"
+	::= 4103
+
+	cpmHackingApplicationDetected TRAP-TYPE
+	ENTERPRISE websense
+	DESCRIPTION
+	"Websense CPM Alert: Hacking Application Detected"
+	::= 4200
+
+	cpmSpywareApplicationDetected TRAP-TYPE
+	ENTERPRISE websense
+	DESCRIPTION
+	"Websense CPM Alert: Spyware Application Detected"
+	::= 4201
+
+	cpmMaliciousApplicationDetected TRAP-TYPE
+	ENTERPRISE websense
+	DESCRIPTION
+	"Websense CPM Alert: Malicious Application Detected"
+	::= 4202
+
+	cpmKeyloggerApplicationDetected TRAP-TYPE
+	ENTERPRISE websense
+	DESCRIPTION
+	"Websense CPM Alert: Keylogger Application Detected"
+	::= 4203
+
+	cpmNetworkAccessBlocked TRAP-TYPE
+	ENTERPRISE websense
+	DESCRIPTION
+	"Websense CPM Alert: Network Access Blocked"
+	::= 4300
+
+END

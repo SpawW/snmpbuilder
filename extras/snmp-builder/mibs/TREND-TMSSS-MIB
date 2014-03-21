@@ -1,0 +1,107 @@
+Trend-MIB DEFINITIONS	::= BEGIN
+
+IMPORTS		
+	OBJECT-TYPE					FROM RFC1212
+	enterprises					FROM RFC1155-SMI
+	DisplayString, DateAndTime	FROM SNMPv2-TC;
+
+	TREND				OBJECT IDENTIFIER ::= {enterprises 6101}
+	AntiVirus			OBJECT IDENTIFIER ::= {TREND 1}
+	TrendMicroSmartProtectionServer				OBJECT IDENTIFIER ::= {AntiVirus 2}
+	ComponentVersion 	OBJECT IDENTIFIER ::= {TrendMicroSmartProtectionServer 1}
+	HealthStatus 		OBJECT IDENTIFIER ::= {TrendMicroSmartProtectionServer 2}
+
+TBLVersion OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "icrc$tbl version"
+    DEFVAL { 0 }
+    ::= { ComponentVersion 1 }
+    
+TBLLastSuccessfulUpdate OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "icrc$tbl Last Update time"
+    DEFVAL { 0 }
+    ::= { ComponentVersion 2 }
+    
+LastUpdateError OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Last pattern update (AU.exe) execution result. 0 means the last update was successful, others are error codes."
+    DEFVAL { 0 }
+    ::= { ComponentVersion 3 }
+    
+LastUpdateErrorMessage OBJECT-TYPE
+	SYNTAX      DisplayString
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "An error message describing the latest pattern update error value."
+	::= { ComponentVersion 4 }
+    
+WCSVersion OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "WCS pattern version"
+    DEFVAL { 0 }
+    ::= { ComponentVersion 5 }
+    
+WCSLastSuccessfulUpdate OBJECT-TYPE
+    SYNTAX      DateAndTime
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "WCS pattern Last Update time"
+    DEFVAL { 0 }
+    ::= { ComponentVersion 6 }
+    
+WCSLastUpdateError OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Last pattern update (AU.exe) execution result. 0 means the last update was successful, others are error codes."
+    DEFVAL { 0 }
+    ::= { ComponentVersion 7 }
+    
+WCSLastUpdateErrorMessage OBJECT-TYPE
+	SYNTAX      DisplayString
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "An error message describing the latest pattern update error value."
+	::= { ComponentVersion 8 }
+
+LastVerifyError OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Last health status query. 0 means the health status is normal , others are error codes."
+    DEFVAL { 0 }
+    ::= { HealthStatus 2 }
+    
+WCSLastVerifyError OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Last health status query. 0 means the health status is normal , others are error codes."
+    DEFVAL { 0 }
+    ::= { HealthStatus 3 }
+
+LastVerifyErrorMessage OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "The latest File Reputation errors appear in the accompanying list"
+    DEFVAL { 0 }
+    ::= { HealthStatus 4 }
+    
+WCSLastVerifyErrorMessage OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "The latest Web Reputation error appear in the accompanying list"
+    DEFVAL { 0 }
+    ::= { HealthStatus 5 }
+END

@@ -1,0 +1,135 @@
+Trend-MIB DEFINITIONS	::= BEGIN
+	IMPORTS
+		enterprises
+			FROM RFC1155-SMI
+		OBJECT-TYPE
+			FROM RFC-1212;
+	
+	tREND			OBJECT IDENTIFIER ::= {enterprises 6101}
+	antiVirus		OBJECT IDENTIFIER ::= {tREND 1}
+	iMSS			OBJECT IDENTIFIER ::= {antiVirus 6505}
+
+	trendTrap	        OBJECT IDENTIFIER ::= {tREND 141}
+		
+		imssEventTrapVar		OBJECT IDENTIFIER ::= {iMSS 9}
+	
+		virusDetectStatus	TRAP-TYPE 
+						ENTERPRISE	trendTrap   
+						VARIABLES       {    imssEventTrapVar 	}
+     					
+						DESCRIPTION	" This event trap is sent when IMSVA finds a virus "
+     					
+						--#TYPE		"Virus Detect Trap"
+						--#SUMMARY	"%s"
+						--#ARGUMENTS	{ 0 }
+						--#SEVERITY	INFORMATIONAL
+						--#GENERIC	6
+						--#CATEGORY	"Status Events"
+						--#TIMEINDEX	0
+						--#STATE	OPERATIONAL
+						
+						::= 1
+	
+		scheduleUpdateStatus	TRAP-TYPE 
+						ENTERPRISE	trendTrap   
+						VARIABLES       {    imssEventTrapVar 	}
+     					
+						DESCRIPTION	" This event trap is sent after a scheduled update "
+     					
+						--#TYPE		"Schedule Update Trap"
+						--#SUMMARY	"%s"
+						--#ARGUMENTS	{ 0 }
+						--#SEVERITY	INFORMATIONAL
+						--#GENERIC	6
+						--#CATEGORY	"Status Events"
+						--#TIMEINDEX	0
+						--#STATE	OPERATIONAL
+						
+						::= 2
+	
+		outbreakAlertStatus	TRAP-TYPE 
+						ENTERPRISE	trendTrap   
+						VARIABLES       {    imssEventTrapVar 	}
+     					
+						DESCRIPTION	" This event trap is sent when a virus outbreak occurs "
+     					
+						--#TYPE		"Outbreak Alert Trap"
+						--#SUMMARY	"%s"
+						--#ARGUMENTS	{ 0 }
+						--#SEVERITY	INFORMATIONAL
+						--#GENERIC	6
+						--#CATEGORY	"Status Events"
+						--#TIMEINDEX	0
+						--#STATE	OPERATIONAL
+						
+						::= 26
+
+		imssServiceStatus	TRAP-TYPE 
+						ENTERPRISE	trendTrap   
+						VARIABLES       {    imssEventTrapVar 	}
+     					
+						DESCRIPTION	" This event trap is sent after the service has been unavailable for a certain length of time "
+     					
+						--#TYPE		"Service status Trap"
+						--#SUMMARY	"%s"
+						--#ARGUMENTS	{ 0 }
+						--#SEVERITY	CRITICAL
+						--#GENERIC	6
+						--#CATEGORY	"Status Events"
+						--#TIMEINDEX	0
+						--#STATE	OPERATIONAL
+						
+						::= 101
+
+		diskSpaceStatus		TRAP-TYPE 
+						ENTERPRISE	trendTrap   
+						VARIABLES       {    imssEventTrapVar 	}
+     					
+						DESCRIPTION	" This event trap is sent when the free disk space goes below the minimum threshold "
+     					
+						--#TYPE		"Disk space Trap"
+						--#SUMMARY	"%s"
+						--#ARGUMENTS	{ 0 }
+						--#SEVERITY	CRITICAL
+						--#GENERIC	6
+						--#CATEGORY	"Status Events"
+						--#TIMEINDEX	0
+						--#STATE	OPERATIONAL
+						
+						::= 102
+
+		deliveryQueueStatus		TRAP-TYPE 
+						ENTERPRISE	trendTrap   
+						VARIABLES       {    imssEventTrapVar 	}
+     					
+						DESCRIPTION	" This event trap is sent when the delivery queue has exceeded the threshold "
+     					
+						--#TYPE		"Delivery Queue Trap"
+						--#SUMMARY	"%s"
+						--#ARGUMENTS	{ 0 }
+						--#SEVERITY	WARNING
+						--#GENERIC	6
+						--#CATEGORY	"Status Events"
+						--#TIMEINDEX	0
+						--#STATE	OPERATIONAL
+						
+						::= 103
+
+		retryQueueStatus		TRAP-TYPE 
+						ENTERPRISE	trendTrap   
+						VARIABLES       {    imssEventTrapVar 	}
+     					
+						DESCRIPTION	" This event trap is sent when the retry queue has exceeded the threshold "
+     					
+						--#TYPE		"Retry Queue Trap"
+						--#SUMMARY	"%s"
+						--#ARGUMENTS	{ 0 }
+						--#SEVERITY	CRITICAL
+						--#GENERIC	6
+						--#CATEGORY	"Status Events"
+						--#TIMEINDEX	0
+						--#STATE	OPERATIONAL
+						
+						::= 105
+						
+END

@@ -1,0 +1,1140 @@
+--=============================================================================
+--
+-- Trend Micro Incorporated 
+-- 10101 N De Anza Blvd., Suite 300
+-- Cupertino, CA 95014
+-- USA
+--
+--=============================================================================
+--
+-- Trend Micro Management Information Base (MIB)
+--
+--=============================================================================
+--
+-- FILENAME:	trend.mib
+--
+-- DESIGNER:	Michael Chuang
+--
+-- TITLE:	Trend Micro Management Information Base
+--
+-- USED IN:	Trend Micro Product Line for SNMP Management.  
+--
+--=============================================================================
+--
+-- Document History Information
+--
+--=============================================================================
+--
+-- Version  Date	  Authors			Description
+-- V2.0     Feb 21  Chris Chen,  New design and migrate to SNMPv2
+--          2008    TMCM
+--=============================================================================
+-- v1.01    Jun 27    Roy Shyu, Trend			Added a new trap to attachment  
+--          2003					blocking.
+--=============================================================================
+-- v1.00    Jun 26    Michael Chuang, Trend		Initial  Document Creation
+--          2003
+--=============================================================================
+--
+-- COMPILERS:  
+--
+--=============================================================================
+
+--=============================================================================
+-- Copyright (C) 2003 Trend Micro Incorporated.  All rights reserved.
+--=============================================================================
+
+--=============================================================================
+-- Includes
+--=============================================================================
+
+--=============================================================================
+-- Trend Micro MIB Begin
+--=============================================================================
+
+TrendMicro-MIB DEFINITIONS	::= BEGIN
+
+IMPORTS		
+  	enterprises, MODULE-IDENTITY, OBJECT-TYPE,	NOTIFICATION-TYPE, TimeTicks,	Counter32,
+  	snmpModules FROM SNMPv2-SMI
+  	DisplayString, TestAndIncr,	TimeStamp FROM SNMPv2-TC
+  	MODULE-COMPLIANCE, OBJECT-GROUP,	NOTIFICATION-GROUP  FROM SNMPv2-CONF;
+	
+trendmicro MODULE-IDENTITY
+		LAST-UPDATED "200802210000Z"
+		ORGANIZATION "Trend Micro Incorporated"
+		CONTACT-INFO "Chris Chen"
+		DESCRIPTION
+		          "The MIB module for SNMPv2 entities."
+		REVISION "200802210000Z"
+		DESCRIPTION
+		          "TrendMicro SNMPv2"
+		::= { enterprises 6101 }
+
+--	trendmicro OBJECT IDENTIFIER ::= { enterprises 6101 }
+	
+	notificationFields OBJECT IDENTIFIER ::= { trendmicro 1000 }
+	
+	infoFields OBJECT IDENTIFIER ::= { notificationFields 1 }
+	
+	notificationVersion	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS 			accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The notification's version number"
+	::= {infoFields 1 }
+	
+	eventID	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The ID of the event"
+	::= {infoFields 2 }
+	
+	eventTYPE	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS 			accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The type of event"
+	::= {infoFields 3 }	
+	
+	eventName	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The name of the notification"
+	::= {infoFields 4 }
+	
+	eventDesc	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The description of the event"
+	::= {infoFields 5 }
+	
+	eventRuleName	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The name of the event rule that triggers the event"
+	::= {infoFields 6 }
+	
+	nodeLocalTime	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The local time when the event triggers"
+	::= {infoFields 7 }
+	
+	nodeGMTTime	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The GMT time when the event triggers"
+	::= {infoFields 8 }
+	
+	nodeName	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The Windows computer name or Unix/Linux host name of the node"
+	::= {infoFields 9 }
+	
+	nodeIP	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The node computer's IP address"
+	::= {infoFields 10 }
+	
+	logonUser	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The user account used to log on to the node that triggers the event"
+	::= {infoFields 11 }
+	
+	manageServerName	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The name of the server/computer that manages the node, which triggers the event. For example, OSCE Server"
+	::= {infoFields 12 }
+	
+	manageServerIP	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The IP address of the server/computer that manages the node, which triggers the event"
+	::= {infoFields 13 }
+	
+	controlManagerName	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The Control Manager that manages the Node"
+	::= {infoFields 14 }
+	
+	controlManagerIP	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The Control Manager IP that manages the Node"
+	::= {infoFields 15 }
+	
+	entityNameOnCM	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The Entity Name of the computer that shows on the CM product tree"
+	::= {infoFields 16 }
+	
+	entityCatagoryOnCM	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The absolute category path of the computer that show on the CM product tree"
+	::= {infoFields 17 }
+		
+	productName	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The complete product name of the product, which triggers the event. For example: OfficeScan Corporate Edition"
+	::= {infoFields 18 }
+	
+	productVersion	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The complete product version of the product, which triggers the event"
+	::= {infoFields 19 }
+	
+	productID	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The abbreviated product name of the product, which triggers the event. For example: OfficeScan"
+	::= {infoFields 20 }
+	
+	productServiceName	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The name of the product service, which triggers the event"
+	::= {infoFields 21 }
+	
+	productServiceStatus	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The status of the product service, which triggers the event"
+	::= {infoFields 22 }
+	
+	productProcessName	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The name of the product process, which triggers the event"
+	::= {infoFields 23 }
+	
+	productProcessStatus	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The status of the product process, which trigger the event"
+	::= {infoFields 24 }
+	
+	errorDescription	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          ""
+	::= {infoFields 25 }
+	
+	
+	licenseKey	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The License Key of the product, which triggers the event"
+	::= {infoFields 26 }
+	
+	licenseStatus	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The status of the product license key which triggers the event"
+	::= {infoFields 27 }
+	
+	licenseDescription	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The description of the license key which triggers the event"
+	::= {infoFields 28 }
+
+
+	threatFields OBJECT IDENTIFIER ::= {notificationFields 2}
+
+
+	threatType	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The type of threat. Examples include:Virus, Spyware, Grayware"
+	::= {threatFields 1 }
+	
+	threatClassification	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The classification for a threat. Examples include: Trojan, root kit"
+	::= {threatFields 2 }
+	
+	threatName	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The complete name of the threat provided by Trend Micro"
+	::= {threatFields 3 }
+	
+	threatCount	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "Total number of occurences of the same threat (for log aggregation)"
+	::= {threatFields 4 }
+	
+	infectedFileName	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The name of the file infected by the threat"
+	::= {threatFields 5 }
+	
+	infectedFilePath	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The absolute file path of the file infected by the threat"
+	::= {threatFields 6 }
+	
+	infectionSourceNodeName	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The name of the node computer that infects the computer, which triggers the event"
+	::= {threatFields 7 }
+	
+	infectionSourceNodeIP	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The IP address of the node computer that infects the computer, which triggers the event"
+	::= {threatFields 8 }
+	
+	infectionNodeName	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The name of the computer infected by the threat"
+	::= {threatFields 9 }
+	
+	infectionNodeIP	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The IP address of the computer infected by the threat"
+	::= {threatFields 10 }
+	
+	securityType	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The type of security event. Examples include: spam, viruses, phishing"
+	::= {threatFields 11 }
+	
+	securityCount	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "Total number of occurences of the same security event (for log aggregation)"
+	::= {threatFields 12 }
+	
+	securityMailID	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The ID of the email that triggers the security event"
+	::= {threatFields 13 }
+	
+	securityMailFrom	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The sender of the email that triggers the security event"
+	::= {threatFields 14 }
+	
+	securityMailTo	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The recipient of the email that triggers the security event"
+	::= {threatFields 15 }
+	
+	securityMailSubject	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The contents of the Subject field of the email that triggers the security event"
+	::= {threatFields 16 }
+	
+	securityFilterName	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The filter rule that triggers the security event"
+	::= {threatFields 17 }
+	
+	securityMailAction	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The action taken on the email"
+	::= {threatFields 18 }
+	
+	securityMailContentAction	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The action taken on the email content"
+	::= {threatFields 19 }
+	
+	securityBlocktype	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The URL blocking type of the secutiry event"
+	::= {threatFields 20 }
+	
+	securityBlockRuleName	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The URL blocking rule name of the security event"
+	::= {threatFields 21 }
+	
+	securityURL	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The URL requested by the computer, which triggers the security event"
+	::= {threatFields 22 }
+	
+	securityFileName	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The file requested by the computer, which triggers the security event"
+	::= {threatFields 23 }
+	
+	violationStatisticUpdate	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The Network VirusWall Violation Statistic update status. The Violation Statistic is a summary provided by Network VirusWall"
+	::= {threatFields 24 }
+	
+	actionOfNVW	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The action Network VirusWall Enforcer takes when a network virus is found"
+	::= {threatFields 25 }
+	
+	action	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The action taken against the threat"
+	::= {threatFields 26 }
+	
+	actionResult	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The action result against the threat"
+	::= {threatFields 28 }
+	
+	scanEngineName	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The name of the scan engine, which detected the threat"
+	::= {threatFields 30 }
+	
+	scanEngineVersion	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The version of the scan engine, which detected the threat"
+	::= {threatFields 31 }
+	
+	scanEngineInfo	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The information of the scan engine, which detected the threat"
+	::= {threatFields 32 }
+	
+	patternRuleName	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The name of the pattern/rule that contains the signature of the threat"
+	::= {threatFields 33 }
+	
+	patternRuleVersion	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The version of the pattern/rule that contains the signature of the threat"
+	::= {threatFields 34 }
+	
+	patternRuleInfo	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The information of the pattern or rule, which detected the threat"
+	::= {threatFields 35 }
+	
+	componentName	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The name of component"
+	::= {threatFields 36 }
+	
+	componentVersion	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The version of component"
+	::= {threatFields 37 }
+	
+	componentInfo	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The information of component"
+	::= {threatFields 38 }
+	
+	srcIPAddress	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The IP Address which initiates the network connection"
+	::= {threatFields 39 }
+	
+	destIPAddress	 OBJECT-TYPE
+	SYNTAX          DisplayString 
+	MAX-ACCESS      accessible-for-notify
+	STATUS          current
+	DESCRIPTION     
+          "The IP Address which responds the network connection"
+	::= {threatFields 40 }
+	
+
+--=============================================================================
+
+--Notification List Section
+
+--=============================================================================
+
+
+	trendNotifications				OBJECT IDENTIFIER ::= { trendmicro 999 }
+	
+	testNotification 	OBJECT IDENTIFIER ::= { trendNotifications 0 }
+	
+		trendTestEvent	 NOTIFICATION-TYPE
+			OBJECTS {
+									notificationVersion,
+									eventID,
+									eventTYPE,
+									eventName,
+									eventDesc,
+									nodeLocalTime,
+									nodeGMTTime,
+									nodeName,
+									nodeIP,
+									controlManagerName,
+									controlManagerIP,
+									productName,
+									productVersion,
+									productID,
+									errorDescription
+								}
+			STATUS      current
+  		DESCRIPTION
+			"Trend Micro Test Notification"
+    	::= { testNotification 0 }
+								
+	statusNotification  	OBJECT IDENTIFIER ::= { trendNotifications 1 }
+				
+		serviceStart	 NOTIFICATION-TYPE
+		OBJECTS {
+									notificationVersion,
+									eventID,
+									eventTYPE,
+									eventName,
+									eventDesc,
+									eventRuleName,
+									nodeLocalTime,
+									nodeGMTTime,
+									nodeName,
+									nodeIP,
+									logonUser,
+									manageServerName,
+									manageServerIP,
+									controlManagerName,
+									controlManagerIP,
+									entityNameOnCM,
+									entityCatagoryOnCM,
+									productName,
+									productVersion,
+									productID,
+									productServiceName,
+									productServiceStatus,
+									errorDescription
+							}
+		STATUS      current
+  	DESCRIPTION
+		"A Product Service started"
+    ::= { statusNotification 1 }
+		
+		serviceStopped	 NOTIFICATION-TYPE
+		OBJECTS {
+									notificationVersion,
+									eventID,
+									eventTYPE,
+									eventName,
+									eventDesc,
+									eventRuleName,
+									nodeLocalTime,
+									nodeGMTTime,
+									nodeName,
+									nodeIP,
+									logonUser,
+									manageServerName,
+									manageServerIP,
+									controlManagerName,
+									controlManagerIP,
+									entityNameOnCM,
+									entityCatagoryOnCM,
+									productName,
+									productVersion,
+									productID,
+									productServiceName,
+									productServiceStatus,
+									errorDescription
+							}
+		STATUS      current
+  	DESCRIPTION
+		"A Product Service stopped"
+    ::= { statusNotification 2 }
+    
+    
+	updateNotification	  	OBJECT IDENTIFIER ::= { trendNotifications 2 }
+			
+		componentUpdateSuccess	 NOTIFICATION-TYPE
+		OBJECTS {
+									notificationVersion,
+									eventID,
+									eventTYPE,
+									eventName,
+									eventDesc,
+									eventRuleName,
+									nodeLocalTime,
+									nodeGMTTime,
+									nodeName,
+									nodeIP,
+									logonUser,
+									manageServerName,
+									manageServerIP,
+									controlManagerName,
+									controlManagerIP,
+									entityNameOnCM,
+									entityCatagoryOnCM,
+									productName,
+									productVersion,
+									productID,
+									errorDescription,
+									componentName,
+									componentVersion,
+									componentInfo
+
+							}
+		STATUS      current
+  	DESCRIPTION
+		"Component update successful"
+    ::= { updateNotification 1 }
+									
+									
+		componentUpdateFail	 NOTIFICATION-TYPE
+		OBJECTS {
+									notificationVersion,
+									eventID,
+									eventTYPE,
+									eventName,
+									eventDesc,
+									eventRuleName,
+									nodeLocalTime,
+									nodeGMTTime,
+									nodeName,
+									nodeIP,
+									logonUser,
+									manageServerName,
+									manageServerIP,
+									controlManagerName,
+									controlManagerIP,
+									entityNameOnCM,
+									entityCatagoryOnCM,
+									productName,
+									productVersion,
+									productID,
+									errorDescription,
+									componentName,
+									componentVersion,
+									componentInfo
+							}
+		STATUS      current
+  	DESCRIPTION
+		"Component update Fail"
+    ::= { updateNotification 2 }
+									
+	securityNotification	  	OBJECT IDENTIFIER ::= { trendNotifications 3 }
+
+		activeOPPolicyReceived	 NOTIFICATION-TYPE
+		OBJECTS {
+									notificationVersion,
+									eventID,
+									eventTYPE,
+									eventName,
+									eventDesc,
+									eventRuleName,
+									nodeLocalTime,
+									nodeGMTTime,
+									nodeName,
+									nodeIP,
+									logonUser,
+									manageServerName,
+									manageServerIP,
+									controlManagerName,
+									controlManagerIP,
+									entityNameOnCM,
+									entityCatagoryOnCM,
+									productName,
+									productVersion,
+									productID,
+									errorDescription,
+									componentName,
+									componentVersion,
+									componentInfo
+							}
+		STATUS      current
+  	DESCRIPTION
+		"Active Outbreak Prevention Policy received"
+    ::= { securityNotification 1 }
+									
+		virusOutbreakAlert	 NOTIFICATION-TYPE
+		OBJECTS {
+									notificationVersion,
+									eventID,
+									eventTYPE,
+									eventName,
+									eventDesc,
+									eventRuleName,
+									nodeLocalTime,
+									nodeGMTTime,
+									nodeName,
+									nodeIP,
+									logonUser,
+									manageServerName,
+									manageServerIP,
+									controlManagerName,
+									controlManagerIP,
+									entityNameOnCM,
+									entityCatagoryOnCM,
+									productName,
+									productVersion,
+									productID,
+									errorDescription,
+									threatType,
+									threatClassification,
+									threatName,
+									threatCount,
+									scanEngineName,
+									scanEngineVersion,
+									patternRuleName,
+									patternRuleVersion
+							}
+		STATUS      current
+  	DESCRIPTION
+		"Virus outbreak alert"
+    ::= { securityNotification 2 }
+		
+		threatFoundActionFail	 NOTIFICATION-TYPE
+		OBJECTS {
+									notificationVersion,
+									eventID,
+									eventTYPE,
+									eventName,
+									eventDesc,
+									eventRuleName,
+									nodeLocalTime,
+									nodeGMTTime,
+									nodeName,
+									nodeIP,
+									logonUser,
+									manageServerName,
+									manageServerIP,
+									controlManagerName,
+									controlManagerIP,
+									entityNameOnCM,
+									entityCatagoryOnCM,
+									productName,
+									productVersion,
+									productID,
+									errorDescription,
+									threatType,
+									threatClassification,
+									threatName,
+									infectedFileName,
+									infectedFilePath,
+									infectionSourceNodeName,
+									infectionSourceNodeIP,
+									infectionNodeName,
+									infectionNodeIP,
+									action,
+									actionResult,
+									scanEngineName,
+									scanEngineVersion,
+									patternRuleName,
+									patternRuleVersion,
+									srcIPAddress,
+									destIPAddress
+							}
+		STATUS      current
+  	DESCRIPTION
+		"Threat Found and Take Action is Fail"
+    ::= { securityNotification 3 }
+    
+		threatFoundActionSuccess	 NOTIFICATION-TYPE
+		OBJECTS {
+									notificationVersion,
+									eventID,
+									eventTYPE,
+									eventName,
+									eventDesc,
+									eventRuleName,
+									nodeLocalTime,
+									nodeGMTTime,
+									nodeName,
+									nodeIP,
+									logonUser,
+									manageServerName,
+									manageServerIP,
+									controlManagerName,
+									controlManagerIP,
+									entityNameOnCM,
+									entityCatagoryOnCM,
+									productName,
+									productVersion,
+									productID,
+									errorDescription,
+									threatType,
+									threatClassification,
+									threatName,
+									infectedFileName,
+									infectedFilePath,
+									infectionSourceNodeName,
+									infectionSourceNodeIP,
+									infectionNodeName,
+									infectionNodeIP,
+									action,
+									actionResult,
+									scanEngineName,
+									scanEngineVersion,
+									patternRuleName,
+									patternRuleVersion,
+									srcIPAddress,
+									destIPAddress
+							}
+		STATUS      current
+  	DESCRIPTION
+		"Threat Found and Take Action Successful"
+    ::= { securityNotification 4 }
+    
+		
+		networkVirusFound	 NOTIFICATION-TYPE
+		OBJECTS {
+									notificationVersion,
+									eventID,
+									eventTYPE,
+									eventName,
+									eventDesc,
+									eventRuleName,
+									nodeLocalTime,
+									nodeGMTTime,
+									nodeName,
+									nodeIP,
+									logonUser,
+									manageServerName,
+									manageServerIP,
+									controlManagerName,
+									controlManagerIP,
+									entityNameOnCM,
+									entityCatagoryOnCM,
+									productName,
+									productVersion,
+									productID,
+									errorDescription,
+									threatType,
+									threatClassification,
+									threatName,
+									infectedFileName,
+									infectedFilePath,
+									infectionSourceNodeName,
+									infectionSourceNodeIP,
+									infectionNodeName,
+									infectionNodeIP,
+									actionOfNVW,
+									scanEngineName,
+									scanEngineVersion,
+									patternRuleName,
+									patternRuleVersion,
+									srcIPAddress,
+									destIPAddress									
+							}
+		STATUS      current
+  	DESCRIPTION
+		"Network Virus Found Alert"
+    ::= { securityNotification 5 }
+    
+		potentialVulnerabilityAttackFound	 NOTIFICATION-TYPE
+		OBJECTS {
+									notificationVersion,
+									eventID,
+									eventTYPE,
+									eventName,
+									eventDesc,
+									eventRuleName,
+									nodeLocalTime,
+									nodeGMTTime,
+									nodeName,
+									nodeIP,
+									logonUser,
+									manageServerName,
+									manageServerIP,
+									controlManagerName,
+									controlManagerIP,
+									entityNameOnCM,
+									entityCatagoryOnCM,
+									productName,
+									productVersion,
+									productID,
+									errorDescription,
+									threatType,
+									threatClassification,
+									threatName
+									
+							}
+		STATUS      current
+  	DESCRIPTION
+		"Potential Vulnerability Attack Alert"
+    ::= { securityNotification 6 }
+    
+		violationStatisticUpdated	 NOTIFICATION-TYPE
+		OBJECTS {
+									notificationVersion,
+									eventID,
+									eventTYPE,
+									eventName,
+									eventDesc,
+									eventRuleName,
+									nodeLocalTime,
+									nodeGMTTime,
+									nodeName,
+									nodeIP,
+									logonUser,
+									manageServerName,
+									manageServerIP,
+									controlManagerName,
+									controlManagerIP,
+									entityNameOnCM,
+									entityCatagoryOnCM,
+									productName,
+									productVersion,
+									productID,
+									errorDescription,
+									violationStatisticUpdate
+							}
+		STATUS      current
+  	DESCRIPTION
+		"Violation Statistic Update"
+    ::= { securityNotification 7 }
+									
+		contentSecurityFound	 NOTIFICATION-TYPE
+		OBJECTS {
+									notificationVersion,
+									eventID,
+									eventTYPE,
+									eventName,
+									eventDesc,
+									eventRuleName,
+									nodeLocalTime,
+									nodeGMTTime,
+									nodeName,
+									nodeIP,
+									logonUser,
+									manageServerName,
+									manageServerIP,
+									controlManagerName,
+									controlManagerIP,
+									entityNameOnCM,
+									entityCatagoryOnCM,
+									productName,
+									productVersion,
+									productID,
+									errorDescription,
+									securityType,
+									securityCount,
+									securityMailID,
+									securityMailFrom,
+									securityMailTo,
+									securityMailSubject,
+									securityFilterName,
+									securityMailAction,
+									securityMailContentAction,
+									scanEngineName,
+									scanEngineVersion,
+									patternRuleName,
+									patternRuleVersion
+							}
+		STATUS      current
+  	DESCRIPTION
+		"Content Secuiry Found"
+    ::= { securityNotification 8 }
+    
+		webSecurityFound	 NOTIFICATION-TYPE
+		OBJECTS {
+									notificationVersion,
+									eventID,
+									eventTYPE,
+									eventName,
+									eventDesc,
+									eventRuleName,
+									nodeLocalTime,
+									nodeGMTTime,
+									nodeName,
+									nodeIP,
+									logonUser,
+									manageServerName,
+									manageServerIP,
+									controlManagerName,
+									controlManagerIP,
+									entityNameOnCM,
+									entityCatagoryOnCM,
+									productName,
+									productVersion,
+									productID,
+									errorDescription,
+									securityType,
+									securityCount,
+									securityBlocktype,
+									securityBlockRuleName,
+									securityURL,
+									securityFileName,
+									scanEngineName,
+									scanEngineVersion,
+									patternRuleName,
+									patternRuleVersion,
+									srcIPAddress,
+									destIPAddress
+							}
+		STATUS      current
+  	DESCRIPTION
+		"Web Security Found"
+    ::= { securityNotification 9 }
+
+END
+ 
+--=============================================================================
+-- Trend Micro MIB End
+--=============================================================================

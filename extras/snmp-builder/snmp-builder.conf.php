@@ -28,9 +28,7 @@
 
 //$mibs_dir = dirname(__FILE__).'/snmp_builder/mibs'; 
 // dinamizar aqui
-define('MIBS_ALL_PATH', '/var/www/zbx2.2/extras/snmp-builder/mibs');
-define('SNMPB_SNMP_PATH','/usr/bin');
+//define('MIBS_ALL_PATH', '/var/www/zbx2.2/extras/snmp-builder/mibs');
+//define('SNMPB_SNMP_PATH','/usr/bin');
 //define('SNMPB_SNMP_PATH','/usr/local/bin');
 ini_set("upload_tmp_dir", "/tmp");
-
-?>
