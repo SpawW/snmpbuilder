@@ -93,7 +93,8 @@ $right_widget_width = '800px';
 	);
 
 	check_fields($fields);
-
+// Init of variables
+        $units = null;
 /* AJAX */
         if(isset($_REQUEST['favobj'])){
                  if('filter' == $_REQUEST['favobj']){
