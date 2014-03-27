@@ -2,8 +2,29 @@
 /* Used for inicial development: snmp_builder.php from GiapNguyen
 ** Objective: SNMPBuilder Plugin with some improvements to easy install with Zabbix-Extras
 ** Copyright 2014 - Adail Horst - http://spinola.net.br/blog
-** Original info is:
+**
+** This file is part of Zabbix-Extras.
+** It is not authorized any change that would mask the existence of the plugin. 
+** The menu names, logos, authorship and other items identificatory plugin 
+** should always be maintained.
+**
+** This program is free software; you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation; either version 2 of the License, or
+** (at your option) any later version.
+**
+** This program is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with this program; if not, write to the Free Software
+** Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+** If not, see http://www.gnu.org/licenses/.
 */
+
+// The OLD Licence from source file to this version of SNMP-Builder
 // Copyright (c) 2009 GiapNguyen
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -33,6 +54,7 @@ require_once dirname(__FILE__).'/include/forms.inc.php';
 require_once dirname(__FILE__).'/include/html.inc.php';
 require_once dirname(__FILE__).'/include/items.inc.php';
 require_once dirname(__FILE__).'/include/graphs.inc.php';
+require_once('include/zbxe_visual_imp.php');
 
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
@@ -40,7 +62,6 @@ ini_set('display_errors', '1');
 $page['title'] = _('SNMP Builder');
 $page['file'] = 'zbxe-snmp-builder.php';
 $page['scripts'] = array('DynTable.js', 'snmp_builder.js', 'jquery.js', 'jquery.cookie.js', 'jquery.jstree.js');
-#$page['scripts'] = array('js/snmp_builder/DynTable.js', 'js/snmp_builder/snmp_builder.js', 'js/jquery/jquery.js', 'js/jquery/jquery.cookie.js', 'js/jquery/jquery.jstree.js');
 $page['hist_arg'] = array();
 $page['type'] = detect_page_type(PAGE_TYPE_HTML);
 
@@ -513,11 +534,11 @@ $right_widget_width = '800px';
 	foreach (array(ITEM_TYPE_SNMPV1, ITEM_TYPE_SNMPV2C) as $v) {
 	    $cmbSnmpVersion->addItem($v, ($v == ITEM_TYPE_SNMPV1) ? '1':'2c');
 	}
-	$form->addItem(array(_('SNMP Version').':'.SPACE,$cmbSnmpVersion,SPACE));
+	$form->addItem(array(_zeT('SNMP Version').':'.SPACE,$cmbSnmpVersion,SPACE));
 
 	// community textbox
 	$tbCommunity = new CTextBox('community', $community);
-	$form->addItem(array(_('Community').':'.SPACE,$tbCommunity ,SPACE));
+	$form->addItem(array(_zeT('Community').':'.SPACE,$tbCommunity ,SPACE));
 	
 	// MIB import button
 	$btnImport = new CSubmit('form', _('Import').' '._('MIB'));
@@ -543,7 +564,7 @@ $right_widget_width = '800px';
 	//Oid tree
 	$oid_tree_w = new CWidget();
 	$oid_tree_w->setClass('header');
-	$oid_tree_w->addHeader(_('OID Tree'));
+	$oid_tree_w->addHeader(_zeT('OID Tree'));
 	
 	$oid_tree_div = new CDiv();
 	$oid_tree_div->setAttribute("id","oidtree");
@@ -573,7 +594,7 @@ $right_widget_width = '800px';
 	//Oidview
 	$oid_view_w = new CWidget();
 	$oid_view_w->setClass('header');
-	$oid_view_w->addHeader(array(_('OID Data').' - '._('Click to force view as table'),new CCheckBox('viewtype','no','onViewType()',1)));
+	$oid_view_w->addHeader(array(_('OID Data').' - '._zeT('Click to force view as table'),new CCheckBox('viewtype','no','onViewType()',1)));
 	
 	$oid_view_div = new CDiv();
 	$oid_view_div->setAttribute("id","oidview");
