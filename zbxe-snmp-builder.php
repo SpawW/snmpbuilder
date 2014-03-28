@@ -594,7 +594,7 @@ $right_widget_width = '800px';
 	//Oidview
 	$oid_view_w = new CWidget();
 	$oid_view_w->setClass('header');
-	$oid_view_w->addHeader(array(_('OID Data').' - '._zeT('Click to force view as table'),new CCheckBox('viewtype','no','onViewType()',1)));
+	$oid_view_w->addHeader(array(_zeT('OID Data').' - '._zeT('Click to force view as table'),new CCheckBox('viewtype','no','onViewType()',1)));
 	
 	$oid_view_div = new CDiv();
 	$oid_view_div->setAttribute("id","oidview");
